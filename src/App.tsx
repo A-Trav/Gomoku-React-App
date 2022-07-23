@@ -1,12 +1,12 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Header } from './components';
+import { Header, UserProvider } from './components';
 import { Game, GameLog, Games, Home, Login } from './pages';
 
 import style from './App.module.css';
 
 function App() {
   return (
-    <>
+    <UserProvider>
       <Header />
       <main className={style.main}>
         <Routes>
@@ -18,7 +18,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
-    </>
+    </UserProvider>
   )
 }
 

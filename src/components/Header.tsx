@@ -11,11 +11,11 @@ export default function Header() {
     const getActions = () => {
         if (user) {
             return <>
-                <button className={style.action} onClick={() => navigate('Games')}>Previous Games</button>
+                <button className={style.action} onClick={() => navigate('/games')}>Previous Games</button>
                 <button className={style.action} onClick={() => { logout(); navigate('/') }}> Logout</button>
             </>
         } else {
-            return <button className={style.action} onClick={() => navigate('Login')}>Login</button>
+            return <button className={style.action} onClick={() => navigate('login')}>Login</button>
         }
     }
 

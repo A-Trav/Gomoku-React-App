@@ -5,14 +5,15 @@ import style from './Tile.module.css'
 
 type TileProps = {
     id: number
+    historicState?: string;
     nextStatusChange: string
     onSelect: () => void
     gameComplete: Boolean
 }
 
 export default function Tile(props: TileProps) {
-    const { id, onSelect, nextStatusChange, gameComplete } = props
-    const [status, setStatus] = useState(TILE_STATUS.AVAILABLE)
+    const { id, onSelect, nextStatusChange, gameComplete, historicState } = props
+    const [status, setStatus] = useState(historicState ? historicState : TILE_STATUS.AVAILABLE)
 
     const getClassName = () => {
         const className = style.tile

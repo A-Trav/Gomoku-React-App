@@ -1,1 +1,1 @@
-export * from './GameWinChecking'
+export * from './GameLogic'

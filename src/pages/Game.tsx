@@ -1,111 +1,72 @@
-import { useState, useReducer } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Button, Tile } from '../components'
-import { GameTurnPayload } from '../types'
+import { useState, useReducer, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocalStorage, gameReducer } from '../hooks'
+import { Button, GameDetails } from '../components'
+import { GameInitState } from './Home'
+import { getCurrentPlayer } from '../utils'
 import { PLAYERS } from '../constants'
 import { checkForWin, checkForDraw } from '../utils'
+import Board from '../components/Board'
+import { GameResult } from '../types'
+
 import style from './Game.module.css'
 
-type GameState = {
-    isWon: Boolean
-    isDraw: Boolean
-    player: PLAYERS
-    tileId: number
-}
-
-type GameTurnAction = {
-    type: PLAYERS
-    payload: GameTurnPayload
-}
-
-function gameTurnReducer(state: GameState[], action: GameTurnAction) {
-    const { type, payload } = action
-    switch (type) {
-        case PLAYERS.PLAYER1: {
-            return [...state, {
-                isWon: checkForWin([...state.filter((turn) => (turn && turn.player === type)).map((turn) => turn.tileId), payload.id], payload.boardSize),
-                isDraw: checkForDraw(state.length + 1, payload.boardSize),
-                player: type,
-                tileId: payload.id
-            }]
-        }
-        case PLAYERS.PLAYER2: {
-            return [...state, {
-                isWon: checkForWin([...state.filter((turn) => (turn && turn.player === type)).map((turn) => turn.tileId), payload.id], payload.boardSize),
-                isDraw: checkForDraw(state.length + 1, payload.boardSize),
-                player: type,
-                tileId: payload.id
-            }]
-        }
-        default:
-            return state
-    }
-}
-
 export default function Game() {
-    const [state, dispatch] = useReducer(gameTurnReducer, [])
-    const [gameComplete, setGameComplete] = useState(false)
-    const boardSize = useLocation().state as number
-    var gameBoard = getNewGameBoard()
+    const { id, boardWidth } = useLocation().state as GameInitState
+    const [games, saveGame] = useLocalStorage<Record<string, GameResult>>(
+        'Games', {})
+    const currentGameTitle = `Game #${id}`
+    const [state, dispatch] = useReducer(gameReducer, [])
+    const [gameWon, setGameWon] = useState(false)
+    const [gameDraw, setGameDraw] = useState(false)
+    const navigate = useNavigate()
 
-    function getCurrentPlayer() {
-        if (state[state.length - 1]) {
-            const { player } = state[state.length - 1]
-            if (player === PLAYERS.PLAYER1)
-                return PLAYERS.PLAYER2
-        }
-        return PLAYERS.PLAYER1
+    useEffect(() => {
+        console.count('Use Effect count')
+        checkGameWon(state)
+        checkGameDraw(state)
+    })
+
+    function checkGameWon(state: number[]) {
+        if (checkForWin(state.filter((_, index) => getCurrentPlayer(index) === getCurrentPlayer(state.length)), boardWidth))
+            setGameWon(true)
     }
 
-    function gameOver(state: GameState[]) {
-        if (state.filter((turn) => turn.isDraw === true || turn.isWon === true).length > 0) {
-            setGameComplete(true)
-            return true
-        }
-        return false
-    }
-
-    function getNewRoundDisplay() {
-        if (gameComplete || gameOver(state))
-            return `Player: ${getCurrentPlayer()} has Won!`
-        if (!gameComplete)
-            return `Current Player: ${getCurrentPlayer()}`
-    }
-
-    function getNewGameBoard() {
-        return (
-            [...Array(boardSize * boardSize)].map((_, index) => (
-                <Tile key={`tile-${index}`} id={index} nextStatusChange={getCurrentPlayer()} gameComplete={gameComplete} onSelect={
-                    () => {
-                        if (!gameComplete) {
-                            dispatch({
-                                type: getCurrentPlayer(),
-                                payload: {
-                                    id: index,
-                                    boardSize: boardSize
-                                }
-                            })
-                        }
-                    }
-                } />
-            ))
-        )
+    function checkGameDraw(state: number[]) {
+        if (checkForDraw(state.length, boardWidth))
+            setGameDraw(true)
     }
 
     return (
         <div className={style.container}>
-            <h1 className={style.header}>
-                {getNewRoundDisplay()}
-            </h1>
-            <div className={style.board}>
-                <div className={style.tile}
-                    style={{ gridTemplateColumns: `repeat(${boardSize}, 1fr)` }
-                    }>{gameBoard}</div>
-            </div>
+            <GameDetails
+                currentPlayer={getCurrentPlayer(state.length, (gameWon || gameDraw))}
+                gameWon={gameWon}
+                gameDraw={gameDraw}
+            />
+            <Board
+                boardWidth={boardWidth}
+                currentPlayer={getCurrentPlayer(state.length, (gameWon || gameDraw))}
+                gameComplete={(gameWon || gameDraw)}
+                dispatch={dispatch}
+            />
             <div className={style.controller}>
-                <Button className={style.button} onClick={() => { console.log(gameBoard) }}>Restart</Button>
-                <Button className={style.button}>Leave</Button>
+                <Button className={style.button} onClick={() => { dispatch({ type: PLAYERS.RESTART }) }}>Restart</Button>
+                <Button className={style.button} onClick={() => {
+                    if (gameDraw || gameWon)
+                        saveGame({
+                            ...games, [currentGameTitle]: {
+                                winner: getCurrentPlayer(state.length, gameWon || gameDraw),
+                                date: new Date().toLocaleDateString(),
+                                result: state,
+                                boardWidth: boardWidth,
+                                gameWon: gameWon,
+                                gameDraw: gameDraw
+                            }
+                        })
+                    navigate('/games')
+                }}>Leave</Button>
             </div>
-        </div>
+        </div >
     )
 }

@@ -1,14 +1,9 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { Button, DropDown } from "../components";
-import { UserContext } from '../context';
+import { Button, DropDown } from "../components/app";
+import { UserContext } from '../utils/context';
 
-import style from './Home.module.css'
-
-export type GameInitState = {
-    id: number
-    boardWidth: number
-}
+import style from './css/Home.module.css'
 
 export default function Home() {
     const { user } = useContext(UserContext)
@@ -26,7 +21,11 @@ export default function Home() {
 
     return (
         <div className={style.container}>
-            <DropDown setSelectedOption={setBoardSizeSelection}></DropDown>
+            <DropDown setSelectedOption={setBoardSizeSelection}
+                defaultText={'Select Board Size'}
+                from={5}
+                to={20}
+            />
             <Button onClick={() => onClickHandler()}>Start Game</Button>
         </div >
     )

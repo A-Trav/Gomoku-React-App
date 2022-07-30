@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { TILE_STATUS } from '../constants'
+import { TILE_STATUS } from '../../utils/constants'
 
-import style from './Tile.module.css'
+import style from './css/Tile.module.css'
 
 type TileProps = {
     id: number

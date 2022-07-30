@@ -1,10 +1,10 @@
 import { useContext } from "react"
 import { useNavigate, Navigate } from "react-router-dom"
-import { UserContext } from "../context"
-import { useLocalStorage } from "../hooks"
-import { GameResult } from "../types"
+import { UserContext } from "../utils/context"
+import { useLocalStorage } from "../utils/hooks"
+import { GameResult } from "../utils/types"
 
-import style from './Games.module.css'
+import style from './css/Games.module.css'
 
 export default function Games() {
     const { user } = useContext(UserContext)
@@ -16,7 +16,6 @@ export default function Games() {
             {Object.keys(games).map((id) => {
                 const { [id]: game } = games
                 const gameDescription = `${id} @${game.date} Winner: ${game.winner}`
-                // console.log(game)
                 return (
                     <div className={style.list} key={id} >
                         <p className={style.title}>{gameDescription}</p>

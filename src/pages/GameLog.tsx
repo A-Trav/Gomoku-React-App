@@ -1,13 +1,12 @@
 import { useParams, useNavigate, Navigate } from "react-router-dom"
-import { useLocalStorage } from "../hooks"
-import { GameResult } from "../types"
-import { getCurrentPlayer } from "../utils"
-import Board from "../components/Board"
-import { GameDetails } from "../components"
+import { useLocalStorage } from "../utils/hooks"
+import { GameResult } from "../utils/types"
+import { getCurrentPlayer } from "../utils/game"
+import { Board, GameDetails } from "../components/game"
 import { useContext } from "react"
-import { UserContext } from "../context"
+import { UserContext } from "../utils/context"
 
-import style from './GameLog.module.css'
+import style from './css/GameLog.module.css'
 
 export default function GameLog() {
     const { user } = useContext(UserContext)

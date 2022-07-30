@@ -1,10 +1,10 @@
 import { Dispatch } from 'react'
-import { Tile } from '../components'
-import { GameAction } from '../hooks/gameReducer'
-import { PLAYERS } from '../constants'
-import { getCurrentPlayer } from '../utils'
+import Tile from './Tile'
+import { GameAction } from '../../utils/hooks/gameReducer'
+import { GAME_ACTIONS, PLAYERS } from '../../utils/constants'
+import { getCurrentPlayer } from '../../utils/game'
 
-import style from './Board.module.css'
+import style from './css/Board.module.css'
 
 type BoardProps = {
     boardWidth: number
@@ -30,7 +30,7 @@ export default function Board(props: BoardProps) {
                     onSelect={() => {
                         if (dispatch) {
                             dispatch({
-                                type: currentPlayer,
+                                type: GAME_ACTIONS[currentPlayer],
                                 payload: {
                                     id: index
                                 }

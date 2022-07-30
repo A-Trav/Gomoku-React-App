@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { Header, UserProvider } from './components';
+import { Header, UserProvider } from './components/app';
 import { Game, GameLog, Games, Home, Login } from './pages';
 
-import style from './App.module.css';
+import style from './css/App.module.css';
 
 function App() {
   return (

@@ -1,11 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Input, Message } from '../components';
-import { UserContext } from '../context';
-
+import { Button, Input, Message } from '../components/app'
+import { UserContext } from '../utils/context'
 import users from '../data/users.json'
 
-import style from './Login.module.css'
+import style from './css/Login.module.css'
 
 export default function Login() {
     const { login } = useContext(UserContext)

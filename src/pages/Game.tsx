@@ -1,15 +1,13 @@
 import { useState, useReducer, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useLocalStorage, gameReducer } from '../hooks'
-import { Button, GameDetails } from '../components'
-import { GameInitState } from './Home'
-import { getCurrentPlayer } from '../utils'
-import { PLAYERS } from '../constants'
-import { checkForWin, checkForDraw } from '../utils'
-import Board from '../components/Board'
-import { GameResult } from '../types'
+import { useLocalStorage, gameReducer } from '../utils/hooks'
+import { Button } from '../components/app'
+import { GameDetails, Board } from '../components/game'
+import { GameInitState, GameResult } from '../utils/types'
+import { GAME_ACTIONS } from '../utils/constants'
+import { checkForWin, checkForDraw, getCurrentPlayer } from '../utils/game'
 
-import style from './Game.module.css'
+import style from './css/Game.module.css'
 
 export default function Game() {
     const { id, boardWidth } = useLocation().state as GameInitState
@@ -51,7 +49,7 @@ export default function Game() {
                 dispatch={dispatch}
             />
             <div className={style.controller}>
-                <Button className={style.button} onClick={() => { dispatch({ type: PLAYERS.RESTART }) }}>Restart</Button>
+                <Button className={style.button} onClick={() => { dispatch({ type: GAME_ACTIONS.RESTART }) }}>Restart</Button>
                 <Button className={style.button} onClick={() => {
                     if (gameDraw || gameWon)
                         saveGame({

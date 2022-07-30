@@ -6,11 +6,10 @@ export enum TILE_STATUS {
 
 export enum PLAYERS {
     PLAYER1 = 'PLAYER1',
-    PLAYER2 = 'PLAYER2',
-    RESTART = 'RESTART'
+    PLAYER2 = 'PLAYER2'
 }
 
-export enum GAME_ACTION_OPTIONS {
+export enum GAME_ACTIONS {
     PLAYER1 = 'PLAYER1',
     PLAYER2 = 'PLAYER2',
     RESTART = 'RESTART'

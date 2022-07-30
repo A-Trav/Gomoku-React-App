@@ -1,6 +1,6 @@
-import { PLAYERS } from "../constants";
+import { PLAYERS } from "../../utils/constants";
 
-import style from './GameDetails.module.css'
+import style from './css/GameDetails.module.css'
 
 type GameDetailsProp = {
     currentPlayer: PLAYERS

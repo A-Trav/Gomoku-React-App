@@ -1,38 +1,49 @@
-import { useState, useReducer, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useState, useReducer, useEffect, useContext } from 'react'
+import { useLocation, useNavigate, Navigate } from 'react-router-dom'
 import { useLocalStorage, gameReducer } from '../utils/hooks'
 import { Button } from '../components/app'
 import { GameDetails, Board } from '../components/game'
 import { GameInitState, GameResult } from '../utils/types'
 import { GAME_ACTIONS } from '../utils/constants'
 import { checkForWin, checkForDraw, getCurrentPlayer } from '../utils/game'
+import { UserContext } from '../utils/context'
 
 import style from './css/Game.module.css'
 
 export default function Game() {
+    const { user } = useContext(UserContext)
     const { id, boardWidth } = useLocation().state as GameInitState
-    const [games, saveGame] = useLocalStorage<Record<string, GameResult>>(
-        'Games', {})
+    const [games, saveGame] = useLocalStorage<Record<string, GameResult>>('Games', {})
     const currentGameTitle = `Game #${id}`
     const [state, dispatch] = useReducer(gameReducer, [])
     const [gameWon, setGameWon] = useState(false)
     const [gameDraw, setGameDraw] = useState(false)
+    const [key, setKey] = useState(0)
     const navigate = useNavigate()
 
     useEffect(() => {
-        console.count('Use Effect count')
         checkGameWon(state)
         checkGameDraw(state)
     })
 
+    if (!user) return <Navigate to="/login" />
+    if (!boardWidth || !id) return <Navigate to="/" />
+
     function checkGameWon(state: number[]) {
-        if (checkForWin(state.filter((_, index) => getCurrentPlayer(index) === getCurrentPlayer(state.length)), boardWidth))
+        if (checkForWin(state.filter((_, index) => getCurrentPlayer(index) === getCurrentPlayer(state.length - 1)), boardWidth))
             setGameWon(true)
     }
 
     function checkGameDraw(state: number[]) {
         if (checkForDraw(state.length, boardWidth))
             setGameDraw(true)
+    }
+
+    function restart() {
+        dispatch({ type: GAME_ACTIONS.RESTART })
+        setGameWon(false)
+        setGameDraw(false)
+        setKey(key + 1)
     }
 
     return (
@@ -47,11 +58,14 @@ export default function Game() {
                 currentPlayer={getCurrentPlayer(state.length, (gameWon || gameDraw))}
                 gameComplete={(gameWon || gameDraw)}
                 dispatch={dispatch}
+                key={key}
             />
             <div className={style.controller}>
-                <Button className={style.button} onClick={() => { dispatch({ type: GAME_ACTIONS.RESTART }) }}>Restart</Button>
                 <Button className={style.button} onClick={() => {
-                    if (gameDraw || gameWon)
+                    restart()
+                }}>Restart</Button>
+                <Button className={style.button} onClick={() => {
+                    if (gameDraw || gameWon) {
                         saveGame({
                             ...games, [currentGameTitle]: {
                                 winner: getCurrentPlayer(state.length, gameWon || gameDraw),
@@ -62,7 +76,9 @@ export default function Game() {
                                 gameDraw: gameDraw
                             }
                         })
-                    navigate('/games')
+                        navigate('/games')
+                    } else
+                        navigate('/')
                 }}>Leave</Button>
             </div>
         </div >

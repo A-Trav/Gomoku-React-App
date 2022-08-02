@@ -6,13 +6,14 @@ import style from './css/Tile.module.css'
 type TileProps = {
     id: number
     historicState?: string;
+    historicTurnNumber?: number;
     nextStatusChange: string
     onSelect: () => void
     gameComplete: Boolean
 }
 
 export default function Tile(props: TileProps) {
-    const { id, onSelect, nextStatusChange, gameComplete, historicState } = props
+    const { id, onSelect, nextStatusChange, gameComplete, historicState, historicTurnNumber } = props
     const [status, setStatus] = useState(historicState ? historicState : TILE_STATUS.AVAILABLE)
 
     const getClassName = () => {
@@ -36,6 +37,8 @@ export default function Tile(props: TileProps) {
             onSelect()
         }
     }
-
-    return <div className={getClassName()} onClick={handleClick} />
+    if (historicState)
+        return <div className={getClassName()} onClick={handleClick}>{`${historicTurnNumber}`}</div>
+    else
+        return <div className={getClassName()} onClick={handleClick} />
 }

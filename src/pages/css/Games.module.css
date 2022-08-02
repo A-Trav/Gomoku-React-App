@@ -16,19 +16,32 @@
     justify-content: space-between;
     margin: auto;
     width: 90%;
-    border: 1.5px solid #000;
+    border: 2px solid #978787;
+    background-color: #bec7d4;
+    /* border: 1.5px solid #000; */
     border-radius: .5rem;
-    /* padding: 1rem; */
 }
 
 .title {
     margin-left: 2rem;
     font-size: 1.25rem;
     justify-content: left;
+    font-weight: 500;
+    color: #5a5252;
 }
 
 .button {
     margin: 1.1rem;
     width: 6rem;
     justify-content: right;
+    border: 2px solid #978787;
+    border-radius: .2rem;
+    cursor: pointer;
+    color: #5a5252;
+    font-weight: bolder;
+    /* font- */
+}
+
+.button:hover {
+    opacity: .5;
 }

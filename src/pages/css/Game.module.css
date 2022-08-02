@@ -10,15 +10,22 @@
 
 .controller {
     display: flex;
-    gap: 3rem;
+    gap: 10em;
     margin: 5rem;
 }
 
 .button {
-    color: #000;
+    background-color: #979292;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.7rem 2.5rem;
     text-align: center;
-    margin: auto;
-    padding: .4rem;
+    display: inline-block;
     font-size: 1rem;
     cursor: pointer;
+}
+
+.button:hover {
+    opacity: .85;
 }

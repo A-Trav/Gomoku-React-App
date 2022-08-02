@@ -1,8 +1,16 @@
 .button {
-    height: 2rem;
-    width: 100%;
-    border: 2px solid #b6b4b4;
-    border-radius: 0.3rem;
+    background-color: #e27d60;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    text-align: center;
     font-size: 1rem;
-    padding: 0.2rem;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.button:hover {
+    opacity: .85;
 }

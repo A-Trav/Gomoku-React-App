@@ -13,7 +13,7 @@ export default function DropDown(props: DropDownProp) {
         <select className={style.dropDown}
             defaultValue={'default'}
             onChange={(e) => { setSelectedOption(parseInt(e.target.value)) }}>
-            <option value="default" disabled hidden>{defaultText}</option>
+            <option value="default" disabled hidden >{defaultText}</option>
             {
                 Array.from(Array(to - from + 1).keys()).map(x => x + from).map((x) =>
                     <option key={x} value={x}>{x}</option>)

@@ -7,6 +7,7 @@ import { useContext } from "react"
 import { UserContext } from "../utils/context"
 
 import style from './css/GameLog.module.css'
+import { Button } from "../components/app"
 
 export default function GameLog() {
     const { user } = useContext(UserContext)
@@ -30,7 +31,7 @@ export default function GameLog() {
                 historicState={game.result}
             />
             <div className={style.controller}>
-                <button className={style.button} onClick={() => navigate('/games')}>Back</button>
+                <Button className={style.button} onClick={() => navigate('/games')}>Back</Button>
             </div>
         </div >
     )

@@ -22,11 +22,17 @@ export default function Board(props: BoardProps) {
             return getCurrentPlayer(historicState.indexOf(index))
     }
 
+    function getHistoricTurnNumber(index: number): number | undefined {
+        if (historicState && historicState.indexOf(index) >= 0)
+            return historicState.indexOf(index) + 1
+    }
+
     function getNewGameBoard() {
         return (
             [...Array(boardWidth * boardWidth)].map((_, index) => (
                 <Tile key={`tile - ${index}`} id={index} nextStatusChange={currentPlayer} gameComplete={gameComplete}
                     historicState={getHistoricState(index)}
+                    historicTurnNumber={getHistoricTurnNumber(index)}
                     onSelect={() => {
                         if (dispatch) {
                             dispatch({

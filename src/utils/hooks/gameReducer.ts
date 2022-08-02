@@ -6,6 +6,10 @@ export type GameAction = {
     payload?: GameTurnPayload
 }
 
+function handleReset(): number[] {
+    return new Array()
+}
+
 export const gameReducer = (state: number[], action: GameAction) => {
     const { type, payload } = action
     switch (type) {
@@ -22,7 +26,7 @@ export const gameReducer = (state: number[], action: GameAction) => {
                 return state
         }
         case GAME_ACTIONS.RESTART:
-            return []
+            return handleReset()
         default:
             return state
     }

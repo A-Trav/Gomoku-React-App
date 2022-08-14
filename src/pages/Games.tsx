@@ -16,7 +16,7 @@ export default function Games() {
         <div className={style.container}>
             {Object.keys(games).map((id) => {
                 const { [id]: game } = games
-                const gameDescription = `${id} @${game.date} Winner: ${game.winner}`
+                const gameDescription = `${id} @ ${game.date} Winner: ${game.winner}`
                 return (
                     <div className={style.list} key={id} >
                         <p className={style.title}>{gameDescription}</p>

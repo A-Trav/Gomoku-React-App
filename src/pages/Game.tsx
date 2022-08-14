@@ -12,9 +12,9 @@ import style from './css/Game.module.css'
 
 export default function Game() {
     const { user } = useContext(UserContext)
-    const { id, boardWidth } = useLocation().state as GameInitState
+    const boardWidth = (useLocation().state as GameInitState)?.boardWidth
     const [games, saveGame] = useLocalStorage<Record<string, GameResult>>('Games', {})
-    const currentGameTitle = `Game #${id}`
+    const currentGameTitle = `Game #${Object.keys(games).length}`
     const [state, dispatch] = useReducer(gameReducer, [])
     const [gameWon, setGameWon] = useState(false)
     const [gameDraw, setGameDraw] = useState(false)
@@ -27,7 +27,7 @@ export default function Game() {
     })
 
     if (!user) return <Navigate to="/login" />
-    if (!boardWidth || !id) return <Navigate to="/" />
+    if (!boardWidth) return <Navigate to="/home" />
 
     function checkGameWon(state: number[]) {
         if (checkForWin(state.filter((_, index) => getCurrentPlayer(index) === getCurrentPlayer(state.length - 1)), boardWidth))

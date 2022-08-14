@@ -1,8 +1,7 @@
 .board {
     width: auto;
     background-color: #e8a87c;
-    border: 1.5px solid #000;
-    border-radius: .5rem;
+    border-radius: .8rem;
     flex-direction: column;
     row-gap: .5rem;
     padding: .75rem;
